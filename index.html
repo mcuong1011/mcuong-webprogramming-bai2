@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Student Management</h2>
+    
+    <form id="studentForm">
+        <label for="studentID">Student ID:</label>
+        <input type="text" id="studentID" required>
+        
+        <label for="studentName">Full Name:</label>
+        <input type="text" id="studentName" required>
+        
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" required>
+        
+        <label for="class">Class:</label>
+        <input type="text" id="class" required>
+        
+        <label for="gpa">GPA:</label>
+        <input type="number" id="gpa" step="0.01" required>
+        
+        <button type="button" onclick="addStudent()">Add Student</button>
+    </form>
+    
+    <h3>Student List</h3>
+    <ul id="studentList"></ul>
+
+    <script>
+        class Student {
+            constructor(id, name, dob, className, gpa) {
+                this.id = id;
+                this.name = name;
+                this.dob = dob;
+                this.className = className;
+                this.gpa = gpa;
+            }
+
+            updateInfo(name, dob, className, gpa) {
+                this.name = name;
+                this.dob = dob;
+                this.className = className;
+                this.gpa = gpa;
+            }
+        }
+
+        let students = [];
+
+        function addStudent() {
+            const studentID = document.getElementById("studentID").value;
+            const studentName = document.getElementById("studentName").value;
+            const dob = document.getElementById("dob").value;
+            const className = document.getElementById("class").value;
+            const gpa = document.getElementById("gpa").value;
+
+            const student = new Student(studentID, studentName, dob, className, gpa);
+            students.push(student);
+
+            displayStudents();
+            clearForm();
+        }
+
+        function displayStudents() {
+            const studentList = document.getElementById("studentList");
+            studentList.innerHTML = "";
+
+            students.forEach(student => {
+                const li = document.createElement("li");
+                const formattedDate = formatDate(student.dob);
+                li.textContent = `Student ID: ${student.id}, Name: ${student.name}, Date of Birth: ${formattedDate}, Class: ${student.className}, GPA: ${student.gpa}`;
+                studentList.appendChild(li);
+            });
+        }
+
+        function clearForm() {
+            document.getElementById("studentForm").reset();
+        }
+
+        function formatDate(dateString) {
+            const [year, month, day] = dateString.split('-');
+            return `${day}/${month}/${year}`;
+        }
+    </script>
+</body>
+</html>
